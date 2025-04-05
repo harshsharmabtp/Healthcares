@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+         /* General Styles */
+         body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f0f8ff;
+        }
+        /* Navbar */
+        .navbar {
+            background-color: #004d40;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            font-size: 18px;
+        }
+        .navbar a:hover {
+            background-color: #00796b;
+            border-radius: 5px;
+        }
+
+        .contact-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .contact-form label {
+            font-weight: bold;
+            margin-top: 10px;
+            align-self: flex-start;
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .contact-form input:focus, .contact-form textarea:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .contact-form button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .contact-form button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #004d40;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+     <!-- Navbar Section -->
+     <div class="navbar">
+        <a href="/home">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <!-- Contact Us Section -->
+    <div class="contact-container">
+        <h2>Contact Us</h2>
+        <p>Have questions? Reach out to us!</p>
+        <div class="contact-form">
+            <form id="contactForm">
+                
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                
+                
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                
+                
+                <input type="text" id="contact" name="contact" placeholder="Enter your contact number" required>
+                
+                <label for="query">Query</label>
+                <textarea id="query" name="query" rows="4" placeholder="Your message" required></textarea>
+                
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+   <div class="footer">
+    <p>&copy; 2025 Online Healthcare Appointment scheduling Platform . All rights reserved.</p>
+</div>
+
+    <script>
+        document.getElementById("contactForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            
+            const formData = {
+                Name: document.getElementById("name").value,
+                Email: document.getElementById("email").value,
+                Contact: document.getElementById("contact").value,
+                Query: document.getElementById("query").value
+            };
+
+            try {
+                const response = await fetch("http://localhost:3000/contactUs", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                alert(result.message || "Submission successful!");
+            } catch (error) {
+                alert("Error submitting form: " + error.message);
+            }
+        });
+    </script>
+</body>
+</html>

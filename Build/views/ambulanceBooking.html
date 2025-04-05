@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambulance Booking</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #72c6ef, #004e92);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            width: 600px; /* Increased width for stretching */
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container:hover {
+            transform: scale(1.02);
+        }
+        h2 {
+            font-size: 26px;
+            color: #004e92;
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: 700;
+            color: #333;
+            text-align: left;
+            width: 80%;
+            font-size: 18px; /* Increased size */
+        }
+        
+        input {
+            width: 80%;
+            padding: 12px;
+            margin-top: 6px;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            transition: border 0.3s;
+            font-size: 16px; /* Increased size */
+        }
+        input:focus {
+            border-color: #004e92;
+            outline: none;
+        }
+        button {
+            margin-top: 20px;
+            background: #ff5733;
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 80%;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px; /* Increased size */
+            font-weight: bold;
+        }
+        button:hover {
+            background: #c70039;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Ambulance Booking Form</h2>
+        <form id="ambulanceForm">
+            <label>Patient Name:</label>
+            <input type="text" name="PatientName" required>
+
+            <label>Cause:</label>
+            <input type="text" name="Cause" required>
+
+            <label>Pickup Location:</label>
+            <input type="text" name="PickupLocation" required>
+
+            <label>Patient Condition:</label>
+            <input type="text" name="PatientCondition" required>
+
+            <label>Contact:</label>
+            <input type="text" name="Contact" required>
+
+            <button type="submit">Book Ambulance</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('ambulanceForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            
+            try {
+                const response = await fetch('http://localhost:3000/ambulbook', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+        
+                const result = await response.json();
+        
+                if (result.success) {
+                    window.location.href = result.url; // Redirect to Stripe Payment Page
+                } else {
+                    alert('Booking Failed: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error connecting to server');
+            }
+        });
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital System - Register</title>
+    <style>
+         /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f0f8ff;
+        }
+        
+        /* Registration Form */
+        .register-container {
+            width: 60%;
+            height: 35rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .register-container .text-container {
+            flex: 1;
+            padding-right: 20px;
+            text-align: center;
+            color: #004d40;
+        }
+        .register-container .text-container h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-family: 'Helvetica', sans-serif;
+            color: #00796b;
+        }
+        .register-container .text-container p {
+            font-size: 1.5rem;
+            line-height: 1.8;
+            color: #555;
+        }
+        .register-container .form-container {
+            flex: 1;
+        }
+        .register-container h2 {
+            text-align: center;
+            color: #004d40;
+            font-size: 2rem;
+        }
+        .register-container input {
+            width: 90%;
+            padding: 12px;
+            margin: 12px 0;
+            font-size: 1.2rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .register-container button {
+            width: 48%;
+            padding: 12px;
+            background-color: #004d40;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        .register-container button:hover {
+            background-color: #00796b;
+        }
+        /* Footer */
+        .footer {
+            background-color: #004d40;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 1.2rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Registration Form -->
+    <div class="register-container">
+        <div class="text-container">
+            <h1>Welcome to Your Health Journey!</h1>
+            <p>We are here to support you at every step of your health journey. Register now to access all our healthcare services and stay connected with your health.</p>
+        </div>
+        <div class="form-container">
+            <h2>Register</h2>
+            <form id="registerForm">
+                
+                <input type="email" id="email" name="email" placeholder="Email" required>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                
+                <div class="button-container">
+                    <button type="submit">Register</button>
+                    <button type="button" onclick="window.location.href='/home'">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Footer Section -->
+    <div class="footer">
+        <p>&copy; 2025 Your Hospital. All rights reserved.</p>
+    </div>
+
+
+<script>
+        document.getElementById("registerForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    // Debugging: Check if values are being fetched correctly
+    console.log("Fetching values...");
+    
+    const formData = {
+        
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value,
+        
+    };
+
+    console.log("Form Data:", formData);  // Debugging
+
+    try {
+        const response = await fetch('http://localhost:3000/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+
+        const textResponse = await response.text();
+        console.log("Raw Response:", textResponse); // Debugging
+
+        const result = JSON.parse(textResponse);
+
+        if (response.status === 201) {
+            alert('Login successful!');
+            window.location.href = '/home';
+        } else if (response.status === 409) {
+            alert("You are not registered.Please register yourself first");
+        } else {
+            alert(result.message || 'Login failed');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred during registration: ' + error.message);
+    }
+});
+</script>
+</body>
+</html>

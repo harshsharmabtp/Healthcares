@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Website</title>
+    <style>
+        /* General Styles */
+        html, body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f0f8ff;
+            min-height: 100vh; /* Ensure full viewport height */
+            display: flex;
+            flex-direction: column; /* Makes content push footer down */
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #004d40;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            font-size: 18px;
+        }
+        .navbar a:hover {
+            background-color: #00796b;
+            border-radius: 5px;
+        }
+
+        /* Main Content Wrapper */
+        .content {
+            flex: 1; /* Expands to push footer down */
+            padding: 20px;
+        }
+
+        /* Services Section */
+        .services {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: white;
+        }
+        .services h2 {
+            color: #004d40;
+        }
+        .service-box {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .service-card {
+            background: #e0f2f1;
+            padding: 20px;
+            width: 250px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #004d40;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            width: 100%;
+            margin-top: auto; /* Push footer to bottom */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar Section -->
+    <div class="navbar">
+        <a href="/home">Home</a>
+        <a href="about.html">About</a>
+        <a href="#services">Services</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Services Section -->
+        <div class="services" id="services">
+            <h2>Our Services</h2>
+            <div class="service-box">
+                <div class="service-card">
+                    <h3>General Checkup</h3>
+                    <p>Regular health checkups to keep you in top condition.</p>
+                </div>
+                <div class="service-card">
+                    <h3>Emergency Care</h3>
+                    <p>24/7 emergency support with the best medical staff.</p>
+                </div>
+                <div class="service-card">
+                    <h3>Specialist Consultation</h3>
+                    <p>Book appointments with top specialists in various fields.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+   <div class="footer">
+    <p>&copy; 2025 Online Healthcare Appointment scheduling Platform . All rights reserved.</p>
+</div>
+</body>
+</html>

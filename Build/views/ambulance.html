@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Ambulance List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        /* Navbar */
+        .navbar {
+            background-color: #004d40;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            font-size: 18px;
+        }
+        .navbar a:hover {
+            background-color: #00796b;
+            border-radius: 5px;
+        }
+        h1 {
+            text-align: center;
+            color: #d32f2f;
+        }
+        #searchBar {
+            width: 80%;
+            margin: 10px auto;
+            display: block;
+            padding: 10px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        /* Table Styles */
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: white;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #004d40;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .book-btn {
+            padding: 8px 12px;
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .book-btn:hover {
+            background-color: #b71c1c;
+        }
+        /* Footer */
+        .footer {
+            background-color: #004d40;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+     <!-- Navbar Section -->
+     <div class="navbar">
+        <a href="/home">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact</a>
+    </div>
+    
+    <h1>Emergency Ambulance List</h1>
+
+    <input type="text" id="searchBar" placeholder="Search by Registration Number (RJ14...)">
+
+    <table>
+        <thead>
+            <tr>
+                <th>Registration Number</th>
+                <th>Facilities</th>
+                <th>Distance (km)</th>
+                <th>Charges (₹)</th>
+                <th>Available</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="ambulanceList">
+            <!-- Data will be inserted here dynamically -->
+        </tbody>
+    </table>
+
+    <!-- Footer Section -->
+    <div class="footer">
+        <p>&copy; 2025 Online Healthcare Appointment scheduling Platform . All rights reserved.</p>
+    </div>
+
+    <script>
+        function bookAmbulance(registrationNumber) {
+            console.log("Redirecting to: ambulanceBooking.html?reg=" + registrationNumber);
+            window.location.href = "ambulanceBooking.html?reg=" + registrationNumber;
+        }
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchBar = document.getElementById("searchBar");
+            const ambulanceList = document.getElementById("ambulanceList");
+        
+            async function fetchAmbulances(searchText = "") {
+                try {
+                    let url = searchText ? `http://localhost:3000/ambusearch?q=${searchText}` 
+                                         : "http://localhost:3000/ambulanceData";
+                    
+                    let response = await fetch(url);
+                    let ambulances = await response.json();
+                    displayAmbulances(ambulances);
+                } catch (error) {
+                    console.error("Error fetching ambulances:", error);
+                }
+            }
+        
+            function displayAmbulances(ambulances) {
+                ambulanceList.innerHTML = "";
+                ambulances.forEach(ambulance => {
+                    let facilities = ambulance.facilities.join(", ");
+                    let row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${ambulance.registrationNumber}</td>
+                        <td>${facilities}</td>
+                        <td>${ambulance.distanceFromPatient}</td>
+                        <td>₹${ambulance.charges}</td>
+                        <td>${ambulance.available ? "Yes" : "No"}</td>
+                        <td><button class="book-btn" onclick="bookAmbulance('${ambulance.registrationNumber}')">Book</button></td>
+                    `;
+                    ambulanceList.appendChild(row);
+                });
+            }
+        
+            searchBar.addEventListener("keyup", function () {
+                fetchAmbulances(searchBar.value);
+            });
+        
+            fetchAmbulances();
+        });
+        
+    </script>
+
+</body>
+</html>

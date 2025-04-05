@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Detect Disease</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #e3f2fd;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #004d40;
+            width: 100%;
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            font-size: 18px;
+        }
+        .navbar a:hover {
+            background-color: #00796b;
+            border-radius: 5px;
+        }
+
+        .container {
+            width: 50rem; /* Increase width to stretch */
+            max-width: 400px;
+            padding: 25px;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding-right:4rem;
+        }
+        
+        h2 {
+            color: #00796b;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        input:focus {
+            border-color: #00796b;
+            outline: none;
+            box-shadow: 0 0 8px rgba(0, 121, 107, 0.5);
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(45deg, #00796b, #004d40);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: linear-gradient(45deg, #004d40, #00251a);
+            transform: scale(1.05);
+        }
+        .result {
+            margin-top: 15px;
+            font-size: 18px;
+            color: #00796b;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #004d40;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar Section -->
+    <div class="navbar">
+        <a href="/home">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <div class="container">
+        <h2>Auto Detect Disease</h2>
+        <input type="text" id="patientName" placeholder="Patient Name">
+        <input type="number" id="patientAge" placeholder="Patient Age">
+        <input type="text" id="symptoms" placeholder="Enter Symptoms">
+        <input type="text" id="contact" placeholder="Contact Number">
+        <button onclick="submitData()">Submit</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer">
+        <p>&copy; 2025 Online Healthcare Appointment scheduling Platform . All rights reserved.</p>
+    </div>
+
+    <script>
+        async function submitData() {
+            const patientName = document.getElementById("patientName").value;
+            const patientAge = document.getElementById("patientAge").value;
+            const symptoms = document.getElementById("symptoms").value.toLowerCase();
+            const contact = document.getElementById("contact").value;
+            
+            // Auto-detect disease
+            let disease = "Unknown";
+            if (symptoms.includes("fever") && symptoms.includes("headache")) {
+                disease = "Dengue , Please Book an appointment with OPD specialist ";
+            } else if (symptoms.includes("fever")) {
+                disease = "Viral Fever , Please Book an appointment with Physician";
+            } else if (symptoms.includes("headache")) {
+                disease = "Migraine , Please Book an appointment with NeuroSergeon";
+            }
+            else if(symptoms.includes("vomit") || symptoms.includes("stomach pain")) {
+                disease = "Gastric Problem , Please Book an appointment with gastroenterologist";
+            }
+            else if(symptoms.includes("fever") || symptoms.includes("cold")){
+
+                disease = "Cold Fever , Please Book an general Physician"
+            }
+
+            else if(symptoms.includes("weightloss") && symptoms.includes("cold") && symptoms.includes("fever")){
+
+                disease = "Typhoid , Please Book an appointment with OPD specialist";
+            }
+            
+            document.getElementById("result").innerText = "Detected Disease: " + disease;
+            
+            // Send data to API
+            const response = await fetch("http://localhost:3000/autodetect", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    PatientName: patientName,
+                    PatientAge: patientAge,
+                    Symptoms: symptoms,
+                    Contact: contact
+                })
+            });
+            
+            const data = await response.json();
+            alert(data.message);
+        }
+    </script>
+</body>
+</html>
